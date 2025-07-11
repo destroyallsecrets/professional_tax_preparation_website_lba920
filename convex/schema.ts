@@ -2,15 +2,18 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
 
-const applicationTables = {
+const schema = defineSchema({
+  ...authTables,
   users: defineTable({
+    // This is the `name` from the Auth.js user profile
     name: v.optional(v.string()),
+    // This is the `email` from the Auth.js user profile
+    email: v.optional(v.string()),
+    // The user's role
     role: v.optional(v.union(v.literal("user"), v.literal("admin"))),
+    // The user's creation time
     createdAt: v.optional(v.number()),
-    // Explicitly list the auth fields you need from authTables.users
-    tokenIdentifier: v.string(),
-    email: v.string(),
-  }),
+  }).index("by_email", ["email"]),
 
   services: defineTable({
     name: v.string(),
@@ -57,6 +60,6 @@ const applicationTables = {
     result: v.number(),
     createdAt: v.number(),
   }).index("by_user", ["userId"]),
-};
+});
 
-export default defineSchema(applicationTables);
+export default schema;
