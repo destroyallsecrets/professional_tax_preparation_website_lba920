@@ -4,10 +4,12 @@ import { authTables } from "@convex-dev/auth/server";
 
 const applicationTables = {
   users: defineTable({
-    ...authTables.users,
     name: v.optional(v.string()),
     role: v.optional(v.union(v.literal("user"), v.literal("admin"))),
     createdAt: v.optional(v.number()),
+    // Explicitly list the auth fields you need from authTables.users
+    tokenIdentifier: v.string(),
+    email: v.string(),
   }),
 
   services: defineTable({
@@ -55,7 +57,4 @@ const applicationTables = {
   }).index("by_user", ["userId"]),
 };
 
-export default defineSchema({
-  ...authTables,
-  ...applicationTables,
-});
+export default defineSchema(applicationTables);
