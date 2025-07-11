@@ -90,6 +90,44 @@ export function ServiceDetail() {
           )}
         </div>
 
+        {/* Step by Step Guide */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
+          <h2 className="text-3xl font-bold text-slate-800 mb-6">How to Proceed</h2>
+          <div className="space-y-6">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+              <div>
+                <h3 className="text-xl font-semibold text-slate-800 mb-2">Gather Required Documents</h3>
+                <p className="text-slate-600">Review the list of required documents below and ensure you have digital copies ready for upload.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start">
+              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+              <div>
+                <h3 className="text-xl font-semibold text-slate-800 mb-2">Create an Account</h3>
+                <p className="text-slate-600">If you haven't already, sign up for an account to securely upload and manage your documents.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start">
+              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">3</div>
+              <div>
+                <h3 className="text-xl font-semibold text-slate-800 mb-2">Upload Documents</h3>
+                <p className="text-slate-600">Use the secure upload section below to submit your documents. Make sure files are in PDF, JPG, JPEG, PNG, DOC, or DOCX format.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start">
+              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">4</div>
+              <div>
+                <h3 className="text-xl font-semibold text-slate-800 mb-2">Track Progress</h3>
+                <p className="text-slate-600">Monitor the status of your uploaded documents in the "Your Uploaded Documents" section. You'll be notified when they're reviewed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Detailed Description */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
           <h2 className="text-3xl font-bold text-slate-800 mb-6">Service Details</h2>
@@ -180,7 +218,9 @@ export function ServiceDetail() {
                     Size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                   <button
-                    onClick={handleFileUpload}
+                    onClick={() => {
+                      void handleFileUpload();
+                    }}
                     disabled={uploading}
                     className="mt-3 bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
