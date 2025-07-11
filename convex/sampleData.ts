@@ -33,6 +33,8 @@ export const initializeSampleServices = mutation({
           "Bank account information for direct deposit",
           "Receipts for deductible expenses"
         ],
+        processingTime: "5-7 business days",
+        additionalNotes: "E-filing included. State tax return preparation available for an additional fee.",
         officialLinks: [
           { title: "IRS Form 1040 Instructions", url: "https://www.irs.gov/forms-pubs/about-form-1040" },
           { title: "Standard Deduction Amounts", url: "https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2024" }
@@ -54,6 +56,8 @@ export const initializeSampleServices = mutation({
           "Previous year business tax return",
           "Articles of Incorporation and S-Election"
         ],
+        processingTime: "10-14 business days",
+        additionalNotes: "Includes one state return. Additional states and complex K-1 allocations may incur extra fees.",
         officialLinks: [
           { title: "IRS Form 1120S Instructions", url: "https://www.irs.gov/forms-pubs/about-form-1120s" },
           { title: "S-Corporation Tax Information", url: "https://www.irs.gov/businesses/small-businesses-self-employed/s-corporations" }

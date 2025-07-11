@@ -75,7 +75,7 @@ export const getAdminLogs = query({
       return {
         ...log,
         adminName: admin?.name || "Unknown Admin",
-        adminEmail: admin?.validator?.email || "Unknown Email",
+        adminEmail: admin?.email || "Unknown Email",
       };
     }));
   },

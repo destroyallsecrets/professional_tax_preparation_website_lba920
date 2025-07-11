@@ -24,6 +24,8 @@ const applicationTables = {
     price: v.optional(v.string()),
     category: v.string(),
     isActive: v.boolean(),
+    processingTime: v.optional(v.string()),
+    additionalNotes: v.optional(v.string()),
   }),
 
   documents: defineTable({

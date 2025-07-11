@@ -73,6 +73,8 @@ export const updateService = mutation({
     price: v.optional(v.string()),
     category: v.string(),
     isActive: v.boolean(),
+    processingTime: v.optional(v.string()),
+    additionalNotes: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
