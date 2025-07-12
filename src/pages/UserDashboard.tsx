@@ -180,7 +180,9 @@ export function UserDashboard() {
                         </a>
                       )}
                       <button
-                        onClick={() => handleDeleteDocument(doc._id)}
+                        onClick={() => {
+                          void handleDeleteDocument(doc._id);
+                        }}
                         className="text-red-600 hover:text-red-700 font-medium px-3 py-1 rounded-lg hover:bg-red-50 transition-colors"
                       >
                         Delete

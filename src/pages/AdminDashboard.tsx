@@ -274,8 +274,11 @@ export function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <select
+                          aria-label="Update document status"
                           value={doc.status}
-                          onChange={(e) => handleDocumentStatusUpdate(doc._id, e.target.value as any)}
+                          onChange={(e) => {
+                            void handleDocumentStatusUpdate(doc._id, e.target.value as any);
+                          }}
                           className={`px-3 py-1 rounded-full text-sm font-medium border-0 ${
                             doc.status === "approved" ? "bg-green-100 text-green-800" :
                             doc.status === "reviewed" ? "bg-blue-100 text-blue-800" :
@@ -342,8 +345,9 @@ export function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <select
+                          aria-label="Update user role"
                           value={user.role}
-                          onChange={(e) => handleUserRoleUpdate(user._id, e.target.value as any)}
+                          onChange={(e) => { void handleUserRoleUpdate(user._id, e.target.value as any); }}
                           className={`px-3 py-1 rounded-full text-sm font-medium border-0 ${
                             user.role === "admin" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"
                           }`}
@@ -353,7 +357,7 @@ export function AdminDashboard() {
                         </select>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                        {new Date(user.createdAt).toLocaleDateString()}
+                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <span className="text-slate-400">No actions available</span>
@@ -389,6 +393,9 @@ export function AdminDashboard() {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">Service Name</label>
                       <input
+                        aria-label="Service name"
+                        placeholder="Enter service name"
+                        title="Service name"
                         type="text"
                         value={newService.name}
                         onChange={(e) => setNewService(prev => ({ ...prev, name: e.target.value }))}
@@ -399,6 +406,9 @@ export function AdminDashboard() {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">Category</label>
                       <input
+                        aria-label="Service category"
+                        placeholder="Enter service category"
+                        title="Service category"
                         type="text"
                         value={newService.category}
                         onChange={(e) => setNewService(prev => ({ ...prev, category: e.target.value }))}
@@ -420,6 +430,9 @@ export function AdminDashboard() {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
                       <textarea
+                        aria-label="Service description"
+                        placeholder="Enter service description"
+                        title="Service description"
                         value={newService.description}
                         onChange={(e) => setNewService(prev => ({ ...prev, description: e.target.value }))}
                         rows={3}
@@ -430,6 +443,8 @@ export function AdminDashboard() {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">Detailed Description</label>
                       <textarea
+                        title="Service detailed description"
+                        placeholder="Enter detailed service description"
                         value={newService.detailedDescription}
                         onChange={(e) => setNewService(prev => ({ ...prev, detailedDescription: e.target.value }))}
                         rows={5}
@@ -483,7 +498,7 @@ export function AdminDashboard() {
                       Cancel
                     </button>
                     <button
-                      onClick={handleCreateService}
+                      onClick={() => void handleCreateService()}
                       className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                     >
                       Create Service

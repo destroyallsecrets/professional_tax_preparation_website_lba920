@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { useMutation } from 'convex/react';
 
 export function Services() {
   const services = useQuery(api.services.getAllServices);

@@ -76,3 +76,22 @@ export const getAllUsers = query({
     return await ctx.db.query("users").collect();
   },
 });
+
+export const setSelfAsAdminIfNoAdminExists = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+    
+    // Check if any admin exists
+    const admins = await ctx.db.query("users")
+      .filter(q => q.eq(q.field("role"), "admin"))
+      .collect();
+    
+    if (admins.length === 0) {
+      await ctx.db.patch(userId, { role: "admin" });
+      return "You have been promoted to admin";
+    }
+    throw new Error("Admin already exists");
+  },
+});

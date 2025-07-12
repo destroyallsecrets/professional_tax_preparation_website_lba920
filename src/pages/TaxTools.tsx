@@ -96,6 +96,7 @@ export function TaxTools() {
                     Filing Status
                   </label>
                   <select
+                    title="Filing Status Selection"
                     value={deductionInputs.filingStatus}
                     onChange={(e) => setDeductionInputs(prev => ({
                       ...prev,
@@ -115,6 +116,7 @@ export function TaxTools() {
                     Tax Year
                   </label>
                   <select
+                    title="Tax Year Selection"
                     value={deductionInputs.taxYear}
                     onChange={(e) => setDeductionInputs(prev => ({
                       ...prev,
@@ -156,7 +158,7 @@ export function TaxTools() {
                 </div>
 
                 <button
-                  onClick={handleCalculateDeduction}
+                  onClick={() => void handleCalculateDeduction()}
                   className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
                   Calculate Deduction
@@ -227,6 +229,7 @@ export function TaxTools() {
                     Filing Status
                   </label>
                   <select
+                    title="Filing Status Selection"
                     value={taxInputs.filingStatus}
                     onChange={(e) => setTaxInputs(prev => ({
                       ...prev,
@@ -262,6 +265,7 @@ export function TaxTools() {
                     Tax Year
                   </label>
                   <select
+                    title="Tax Year Selection"
                     value={taxInputs.taxYear}
                     onChange={(e) => setTaxInputs(prev => ({
                       ...prev,
@@ -275,7 +279,7 @@ export function TaxTools() {
                 </div>
 
                 <button
-                  onClick={handleCalculateTax}
+                  onClick={() => void handleCalculateTax()}
                   className="w-full bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
                 >
                   Calculate Tax

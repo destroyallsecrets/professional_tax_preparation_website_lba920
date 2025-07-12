@@ -71,7 +71,10 @@ export function Home() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Filing Status</label>
-                    <select className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                    <select 
+                      aria-label="Filing Status"
+                      className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    >
                       <option value="single">Single</option>
                       <option value="marriedFilingJointly">Married Filing Jointly</option>
                       <option value="marriedFilingSeparately">Married Filing Separately</option>
