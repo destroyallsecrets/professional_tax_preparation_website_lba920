@@ -25,11 +25,13 @@ export default function App() {
         await setSelfAsAdmin();
         await initializeServices();
       } catch (error) {
-        console.log("Initialization:", error.message);
+        console.log("Initialization:", (error as Error).message);
       }
     };
-    initialize();
-  }, []);
+    void initialize().catch(error => {
+      console.error("Failed to initialize:", error);
+    });
+  }, [initializeServices, setSelfAsAdmin]);
 
   return (
     <Router>
