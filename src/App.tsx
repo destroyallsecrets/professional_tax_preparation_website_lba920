@@ -5,7 +5,7 @@ import { SignInForm } from "./SignInForm";
 import { Toaster } from "sonner";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
-import { Home } from "./pages/Home";
+import Home from "./pages/Home";
 import { About } from "./pages/About";
 import { Services } from "./pages/Services";
 import { ServiceDetail } from "./pages/ServiceDetail";
@@ -35,9 +35,9 @@ export default function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-black text-gold-light">
         <Navigation />
-        <main className="pt-20">
+        <main className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -58,10 +58,10 @@ export default function App() {
               <Unauthenticated>
                 <div className="min-h-screen flex items-center justify-center p-4">
                   <div className="w-full max-w-md">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8">
+                    <div className="bg-black-light backdrop-blur-sm rounded-2xl shadow-xl border border-gold/20 p-8">
                       <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
-                        <p className="text-slate-600">Sign in to access your tax documents</p>
+                        <h1 className="text-3xl font-bold text-gold mb-2">Welcome Back</h1>
+                        <p className="text-gold-light">Sign in to access your tax documents</p>
                       </div>
                       <SignInForm />
                     </div>

@@ -28,6 +28,27 @@ export function TaxTools() {
   const calculateEstimatedTax = useMutation(api.taxTools.calculateEstimatedTax);
   const taxDueDates = useQuery(api.taxTools.getTaxDueDates, { taxYear: 2024 });
 
+  function calculateBaseDeduction() {
+    const { filingStatus, taxYear } = deductionInputs;
+    const deductionTable: Record<string, Record<number, number>> = {
+      single: { 2024: 14600, 2023: 13850 },
+      marriedFilingJointly: { 2024: 29200, 2023: 27700 },
+      marriedFilingSeparately: { 2024: 14600, 2023: 13850 },
+      headOfHousehold: { 2024: 21900, 2023: 20800 },
+    };
+    return deductionTable[filingStatus]?.[taxYear] ?? 0;
+  }
+
+  function calculateAdditionalDeduction() {
+    const { age65OrOlder, blind, filingStatus } = deductionInputs;
+    const additionalAmount = (filingStatus === "single" || filingStatus === "headOfHousehold") ? 1850 : 1500;
+    return (age65OrOlder ? additionalAmount : 0) + (blind ? additionalAmount : 0);
+  }
+
+  function calculateTotalDeduction() {
+    return calculateBaseDeduction() + calculateAdditionalDeduction();
+  }
+
   const handleCalculateDeduction = async () => {
     try {
       const result = await calculateStandardDeduction(deductionInputs);
@@ -51,10 +72,10 @@ export function TaxTools() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl lg:text-6xl font-bold text-slate-800 mb-6">
+          <h1 className="text-5xl lg:text-6xl font-bold text-gold mb-6">
             Free Tax Tools
           </h1>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gold-light max-w-3xl mx-auto leading-relaxed">
             Use our professional-grade tax calculators and tools to estimate your taxes, 
             plan your finances, and stay on top of important deadlines.
           </p>
@@ -72,8 +93,8 @@ export function TaxTools() {
               onClick={() => setActiveCalculator(tool.id as any)}
               className={`flex items-center space-x-3 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                 activeCalculator === tool.id
-                  ? "bg-blue-600 text-white shadow-lg transform scale-105"
-                  : "bg-white text-slate-700 hover:bg-blue-50 border border-slate-200"
+                  ? "bg-gold text-black shadow-lg transform scale-105"
+                  : "bg-black-light text-gold-light hover:bg-black border border-gold/30"
               }`}
             >
               <span className="text-xl">{tool.icon}</span>
@@ -84,15 +105,15 @@ export function TaxTools() {
 
         {/* Standard Deduction Calculator */}
         {activeCalculator === "deduction" && (
-          <div className="bg-white rounded-3xl shadow-2xl p-8 lg:p-12">
-            <h2 className="text-3xl font-bold text-slate-800 mb-8 text-center">
+          <div className="bg-black-light rounded-3xl shadow-2xl p-8 lg:p-12 border border-gold/30">
+            <h2 className="text-3xl font-bold text-gold mb-8 text-center">
               Standard Deduction Calculator
             </h2>
             
             <div className="grid lg:grid-cols-2 gap-12">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-gold mb-3">
                     Filing Status
                   </label>
                   <select
@@ -102,7 +123,7 @@ export function TaxTools() {
                       ...prev,
                       filingStatus: e.target.value as any
                     }))}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gold/30 focus:ring-2 focus:ring-gold focus:border-gold bg-black-light text-gold transition-colors"
                   >
                     <option value="single">Single</option>
                     <option value="marriedFilingJointly">Married Filing Jointly</option>
@@ -112,7 +133,7 @@ export function TaxTools() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-gold mb-3">
                     Tax Year
                   </label>
                   <select
@@ -122,7 +143,7 @@ export function TaxTools() {
                       ...prev,
                       taxYear: parseInt(e.target.value)
                     }))}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gold/30 focus:ring-2 focus:ring-gold focus:border-gold bg-black-light text-gold transition-colors"
                   >
                     <option value={2024}>2024</option>
                     <option value={2023}>2023</option>
@@ -138,9 +159,9 @@ export function TaxTools() {
                         ...prev,
                         age65OrOlder: e.target.checked
                       }))}
-                      className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                      className="w-5 h-5 text-gold rounded focus:ring-gold bg-black-light border-gold/30"
                     />
-                    <span className="text-slate-700">Age 65 or older</span>
+                    <span className="text-gold-light">Age 65 or older</span>
                   </label>
 
                   <label className="flex items-center space-x-3">
@@ -151,65 +172,67 @@ export function TaxTools() {
                         ...prev,
                         blind: e.target.checked
                       }))}
-                      className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                      className="w-5 h-5 text-gold rounded focus:ring-gold bg-black-light border-gold/30"
                     />
-                    <span className="text-slate-700">Blind</span>
+                    <span className="text-gold-light">Blind</span>
                   </label>
                 </div>
 
                 <button
                   onClick={() => void handleCalculateDeduction()}
-                  className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="w-full bg-gold text-black px-6 py-3 rounded-lg font-semibold hover:bg-gold/90 transition-colors"
                 >
                   Calculate Deduction
                 </button>
               </div>
 
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-slate-800 mb-6">Your Standard Deduction</h3>
+              <div className="bg-gradient-to-br from-black to-black-light rounded-2xl p-8 border border-gold/30">
+                <h3 className="text-2xl font-bold text-gold mb-6">Your Standard Deduction</h3>
                 
-                {standardDeduction && (
+                <div className="space-y-2">
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center py-3 border-b border-slate-200">
-                      <span className="text-slate-600">Base Deduction:</span>
-                      <span className="font-bold text-slate-800">
-                        ${standardDeduction.baseDeduction.toLocaleString()}
+                    <div className="flex justify-between items-center py-3 border-b border-gold/20">
+                      <span className="text-gold-light">Base Deduction:</span>
+                      <span className="font-bold text-gold">
+                        ${calculateBaseDeduction().toLocaleString()}
                       </span>
                     </div>
-                    
-                    {standardDeduction.additionalDeduction > 0 && (
-                      <div className="flex justify-between items-center py-3 border-b border-slate-200">
-                        <span className="text-slate-600">Additional Deduction:</span>
-                        <span className="font-bold text-slate-800">
-                          ${standardDeduction.additionalDeduction.toLocaleString()}
+
+                    {(deductionInputs.age65OrOlder || deductionInputs.blind) && (
+                      <div className="flex justify-between items-center py-3 border-b border-gold/20">
+                        <span className="text-gold-light">Additional Deduction:</span>
+                        <span className="font-bold text-gold">
+                          ${calculateAdditionalDeduction().toLocaleString()}
                         </span>
                       </div>
                     )}
-                    
-                    <div className="flex justify-between items-center py-3 bg-blue-100 rounded-lg px-4">
-                      <span className="text-blue-800 font-semibold">Total Deduction:</span>
-                      <span className="font-bold text-2xl text-blue-800">
-                        ${standardDeduction.totalDeduction.toLocaleString()}
+
+                    <div className="flex justify-between items-center py-3 bg-gold/10 rounded-lg px-4">
+                      <span className="text-gold font-semibold">Total Deduction:</span>
+                      <span className="font-bold text-2xl text-gold">
+                        ${calculateTotalDeduction().toLocaleString()}
                       </span>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
+
+
             </div>
           </div>
         )}
 
         {/* Tax Estimation Calculator */}
         {activeCalculator === "tax" && (
-          <div className="bg-white rounded-3xl shadow-2xl p-8 lg:p-12">
-            <h2 className="text-3xl font-bold text-slate-800 mb-8 text-center">
+          <div className="bg-black-light rounded-3xl shadow-2xl p-8 lg:p-12 border border-gold/30">
+            <h2 className="text-3xl font-bold text-gold mb-8 text-center">
               Tax Estimation Calculator
             </h2>
             
             <div className="grid lg:grid-cols-2 gap-12">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-gold mb-3">
                     Annual Income
                   </label>
                   <input
@@ -219,13 +242,13 @@ export function TaxTools() {
                       ...prev,
                       income: parseInt(e.target.value) || 0
                     }))}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gold/30 focus:ring-2 focus:ring-gold focus:border-gold bg-black-light text-gold transition-colors"
                     placeholder="75000"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-gold mb-3">
                     Filing Status
                   </label>
                   <select
@@ -235,7 +258,7 @@ export function TaxTools() {
                       ...prev,
                       filingStatus: e.target.value as any
                     }))}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gold/30 focus:ring-2 focus:ring-gold focus:border-gold bg-black-light text-gold transition-colors"
                   >
                     <option value="single">Single</option>
                     <option value="marriedFilingJointly">Married Filing Jointly</option>
@@ -245,7 +268,7 @@ export function TaxTools() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-gold mb-3">
                     Total Deductions
                   </label>
                   <input
@@ -255,13 +278,13 @@ export function TaxTools() {
                       ...prev,
                       deductions: parseInt(e.target.value) || 0
                     }))}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gold/30 focus:ring-2 focus:ring-gold focus:border-gold bg-black-light text-gold transition-colors"
                     placeholder="14600"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-3">
+                  <label className="block text-sm font-semibold text-gold mb-3">
                     Tax Year
                   </label>
                   <select
@@ -271,7 +294,7 @@ export function TaxTools() {
                       ...prev,
                       taxYear: parseInt(e.target.value)
                     }))}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gold/30 focus:ring-2 focus:ring-gold focus:border-gold bg-black-light text-gold transition-colors"
                   >
                     <option value={2024}>2024</option>
                     <option value={2023}>2023</option>
@@ -280,7 +303,7 @@ export function TaxTools() {
 
                 <button
                   onClick={() => void handleCalculateTax()}
-                  className="w-full bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                  className="w-full bg-gold text-black px-6 py-3 rounded-lg font-semibold hover:bg-gold/90 transition-colors"
                 >
                   Calculate Tax
                 </button>

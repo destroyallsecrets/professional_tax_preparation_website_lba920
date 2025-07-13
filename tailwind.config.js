@@ -18,17 +18,30 @@ module.exports = {
         hover: "0 2px 8px rgba(0, 0, 0, 0.12)",
       },
       colors: {
+        black: {
+          DEFAULT: "#181818",
+          light: "#222222",
+        },
+        gold: {
+          DEFAULT: "#FFD700",
+          dark: "#B8860B",
+          light: "#FFF8DC",
+        },
         primary: {
-          DEFAULT: "#4F46E5",
-          hover: "#4338CA",
+          DEFAULT: "#FFD700",
+          hover: "#B8860B",
         },
         secondary: {
-          DEFAULT: "#6B7280",
-          hover: "#4B5563",
+          DEFAULT: "#181818",
+          hover: "#222222",
         },
         accent: {
-          DEFAULT: "#8B5CF6",
-          hover: "#7C3AED",
+          DEFAULT: "#FFF8DC",
+          hover: "#FFD700",
+        },
+        text: {
+          DEFAULT: "#FFF8DC",
+          dark: "#181818",
         },
       },
       spacing: {

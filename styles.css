@@ -1,0 +1,50 @@
+:root {
+    --black: #111111;
+    --gold: #FFD700;
+    --white: #ffffff;
+    --gray: #222222;
+}
+
+body {
+    background: var(--black);
+    color: var(--gold);
+}
+
+header, nav, footer {
+    background: var(--black);
+    color: var(--gold);
+}
+
+a {
+    color: var(--gold);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--white);
+    background: var(--gold);
+}
+
+button, .btn {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+}
+button:hover, .btn:hover {
+    background: var(--black);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+}
+
+input, textarea, select {
+    background: var(--gray);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+}
+
+.card, .panel, .section {
+    background: var(--gray);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+}
+
+/* Remove or update any other color definitions to use only black, gold, white, or gray */

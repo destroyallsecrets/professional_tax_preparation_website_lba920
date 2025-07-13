@@ -14,7 +14,7 @@ export function SignInForm() {
   return (
     <div className="w-full">
       <form
-        className="flex flex-col gap-form-field"
+        className="space-y-6 p-6 bg-black-light rounded-lg border border-gold-dark"
         onSubmit={(e) => {
           e.preventDefault();
           setSubmitting(true);
@@ -58,20 +58,26 @@ export function SignInForm() {
             required
           />
         )}
-        <input
-          className="auth-input-field"
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-        />
-        <input
-          className="auth-input-field"
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
+        <div>
+          <label className="block text-gold-light mb-2">Email</label>
+          <input
+            type="email"
+            className="auth-input-field"
+            placeholder="Enter your email"
+            name="email"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-gold-light mb-2">Password</label>
+          <input
+            type="password"
+            className="auth-input-field"
+            placeholder="Enter your password"
+            name="password"
+            required
+          />
+        </div>
         <button className="auth-button" type="submit" disabled={submitting}>
           {flow === "signIn" ? "Sign in" : "Sign up"}
         </button>
@@ -91,9 +97,9 @@ export function SignInForm() {
         </div>
       </form>
       <div className="flex items-center justify-center my-3">
-        <hr className="my-4 grow border-gray-200" />
+        <hr className="my-4 grow border-gold/20" />
         <span className="mx-4 text-secondary">or</span>
-        <hr className="my-4 grow border-gray-200" />
+        <hr className="my-4 grow border-gold/20" />
       </div>
       <button className="auth-button" onClick={() => void signIn("anonymous")}>
         Sign in anonymously

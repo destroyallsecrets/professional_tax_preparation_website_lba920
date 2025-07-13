@@ -19,7 +19,7 @@ export function ServiceDetail() {
   if (!service) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold"></div>
       </div>
     );
   }
@@ -70,59 +70,57 @@ export function ServiceDetail() {
     <div className="min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav className="mb-8">
+        <div className="mb-8">
           <Link
             to="/services"
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="text-gold hover:text-gold-dark font-medium"
           >
             ← Back to Services
           </Link>
-        </nav>
+        </div>
 
-        {/* Service Header */}
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 lg:p-12 text-white mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4">{service.name}</h1>
-          <p className="text-xl text-blue-100 leading-relaxed">{service.description}</p>
+        <div className="bg-gradient-to-br from-black to-black-light rounded-3xl p-8 lg:p-12 text-gold mb-12 border border-gold/30">
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6">{service.name}</h1>
+          <p className="text-xl text-gold-light leading-relaxed">{service.description}</p>
           {service.price && (
-            <div className="mt-6 text-2xl font-bold text-cyan-300">
-              Starting at {service.price}
+            <div className="mt-6">
+              <span className="text-2xl font-bold text-gold">{service.price}</span>
             </div>
           )}
         </div>
 
-        {/* Step by Step Guide */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-slate-800 mb-6">How to Proceed</h2>
-          <div className="space-y-6">
+        <div className="bg-black-light rounded-2xl shadow-lg p-8 mb-12 border border-gold/30">
+          <h2 className="text-3xl font-bold text-gold mb-6">How to Proceed</h2>
+          <div className="space-y-8">
             <div className="flex items-start">
-              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+              <div className="flex-shrink-0 bg-gold text-black w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">1</div>
               <div>
-                <h3 className="text-xl font-semibold text-slate-800 mb-2">Gather Required Documents</h3>
-                <p className="text-slate-600">Review the list of required documents below and ensure you have digital copies ready for upload.</p>
+                <h3 className="text-xl font-semibold text-gold mb-2">Gather Required Documents</h3>
+                <p className="text-gold-light">Review the list of required documents below and ensure you have digital copies ready for upload.</p>
               </div>
             </div>
 
             <div className="flex items-start">
-              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+              <div className="flex-shrink-0 bg-gold text-black w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">2</div>
               <div>
-                <h3 className="text-xl font-semibold text-slate-800 mb-2">Create an Account</h3>
-                <p className="text-slate-600">If you haven't already, sign up for an account to securely upload and manage your documents.</p>
+                <h3 className="text-xl font-semibold text-gold mb-2">Create an Account</h3>
+                <p className="text-gold-light">If you haven't already, sign up for an account to securely upload and manage your documents.</p>
               </div>
             </div>
 
             <div className="flex items-start">
-              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">3</div>
+              <div className="flex-shrink-0 bg-gold text-black w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">3</div>
               <div>
-                <h3 className="text-xl font-semibold text-slate-800 mb-2">Upload Documents</h3>
-                <p className="text-slate-600">Use the secure upload section below to submit your documents. Make sure files are in PDF, JPG, JPEG, PNG, DOC, or DOCX format.</p>
+                <h3 className="text-xl font-semibold text-gold mb-2">Upload Documents</h3>
+                <p className="text-gold-light">Use the secure upload section below to submit your documents. Make sure files are in PDF, JPG, JPEG, PNG, DOC, or DOCX format.</p>
               </div>
             </div>
 
             <div className="flex items-start">
-              <div className="flex-shrink-0 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">4</div>
+              <div className="flex-shrink-0 bg-gold text-black w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">4</div>
               <div>
-                <h3 className="text-xl font-semibold text-slate-800 mb-2">Track Progress</h3>
-                <p className="text-slate-600">Monitor the status of your uploaded documents in the "Your Uploaded Documents" section. You'll be notified when they're reviewed.</p>
+                <h3 className="text-xl font-semibold text-gold mb-2">Track Progress</h3>
+                <p className="text-gold-light">Monitor the status of your uploaded documents in the "Your Uploaded Documents" section. You'll be notified when they're reviewed.</p>
               </div>
             </div>
           </div>
