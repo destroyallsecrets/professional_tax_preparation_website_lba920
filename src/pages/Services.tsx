@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useMutation } from 'convex/react';
 
 export function Services() {
   const services = useQuery(api.services.getAllServices);
@@ -36,36 +35,37 @@ export function Services() {
           </p>
         </div>
 
-        <div className="space-y-12">
-          <header className="text-center py-12 bg-black-light">
-            <h1 className="text-4xl font-bold text-gold">Our Services</h1>
-            <p className="text-gold-light mt-4">Comprehensive tax solutions for every need</p>
-          </header>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {services.map((service) => (
-              <div key={service._id} className="p-6 rounded-lg bg-black-light border border-gold-dark">
-                <h2 className="text-2xl font-semibold text-gold mb-4">{service.name}</h2>
-                <p className="text-gold-light">{service.description}</p>
-                <Link 
-                  to={`/services/${service._id}`}
-                  className="mt-4 inline-block px-6 py-2 bg-gold text-black hover:bg-gold-dark rounded"
-                >
-                  Learn More
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Empty State */}
-        {services.length === 0 && (
+        {services.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-6">📋</div>
             <h3 className="text-2xl font-bold text-gold mb-4">No Services Available</h3>
             <p className="text-gold-light">
               Please check back later for our available services.
             </p>
+          </div>
+        ) : (
+          <div className="space-y-16">
+            {Object.entries(serviceCategories).map(([category, categoryServices]) => (
+              <div key={category} className="space-y-8">
+                <h2 className="text-3xl font-bold text-gold border-b border-gold/20 pb-4">
+                  {category}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-8">
+                  {categoryServices.map((service) => (
+                    <div key={service._id} className="p-6 rounded-lg bg-black-light border border-gold-dark">
+                      <h2 className="text-2xl font-semibold text-gold mb-4">{service.name}</h2>
+                      <p className="text-gold-light">{service.description}</p>
+                      <Link 
+                        to={`/services/${service._id}`}
+                        className="mt-4 inline-block px-6 py-2 bg-gold text-black hover:bg-gold-dark rounded"
+                      >
+                        Learn More
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         )}
 

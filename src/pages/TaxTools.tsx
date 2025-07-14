@@ -21,7 +21,7 @@ export function TaxTools() {
     taxYear: 2024,
   });
 
-  const [standardDeduction, setStandardDeduction] = useState<any>(null);
+  const [setStandardDeduction] = useState<any>(null);
   const [estimatedTax, setEstimatedTax] = useState<any>(null);
   
   const calculateStandardDeduction = useMutation(api.taxTools.calculateStandardDeduction);
