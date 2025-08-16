@@ -12,10 +12,62 @@ import { AdminDashboard } from "./pages/AdminDashboard";
 import { UserDashboard } from "./pages/UserDashboard";
 import { TaxTools } from "./pages/TaxTools";
 import { Contact } from "./pages/Contact";
-import { useEffect } from 'react';
+import { useEffect, Component, ErrorInfo, ReactNode } from 'react';
 import { useMutation } from 'convex/react';
 
-export default function App() {
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends Component<{children: ReactNode}, ErrorBoundaryState> {
+  constructor(props: {children: ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('App Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-black text-gold-light p-4">
+          <div className="text-center max-w-md">
+            <div className="text-6xl mb-6">⚠️</div>
+            <h1 className="text-3xl font-bold text-gold mb-4">Something went wrong</h1>
+            <p className="text-gold-light mb-6">
+              There was an error loading the application. Please refresh the page.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-gold text-black px-6 py-3 rounded-lg font-semibold hover:bg-gold-dark transition-colors"
+            >
+              Refresh Page
+            </button>
+            {this.state.error && (
+              <details className="mt-4 text-left">
+                <summary className="cursor-pointer text-gold">Error Details</summary>
+                <pre className="mt-2 text-xs text-gold-light bg-black-light p-2 rounded overflow-auto">
+                  {this.state.error.toString()}
+                </pre>
+              </details>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+function AppContent() {
   const initializeServices = useMutation(api.sampleData.initializeSampleServices);
   const setSelfAsAdmin = useMutation(api.users.setSelfAsAdminIfNoAdminExists);
   
@@ -90,5 +142,13 @@ export default function App() {
         <Toaster position="top-right" />
       </div>
     </Router>
+  );
+}
+
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <AppContent />
+    </ErrorBoundary>
   );
 }

@@ -67,7 +67,8 @@ function ServiceCard({ service }: { service: any }) {
         documentIndex,
       });
       toast.success("Document removed successfully!");
-    } catch (_error) {
+    } catch (error) {
+      console.error("Failed to remove document:", error);
       toast.error("Failed to remove document");
     }
   };
@@ -201,7 +202,8 @@ export function AdminDashboard() {
     try {
       await updateDocumentStatus({ documentId: documentId as any, status });
       toast.success("Document status updated successfully");
-    } catch (_error) {
+    } catch (error) {
+      console.error("Failed to update document status:", error);
       toast.error("Failed to update document status");
     }
   };
@@ -210,7 +212,8 @@ export function AdminDashboard() {
     try {
       await updateUserRole({ userId: userId as any, role });
       toast.success("User role updated successfully");
-    } catch (_error) {
+    } catch (error) {
+      console.error("Failed to update user role:", error);
       toast.error("Failed to update user role");
     }
   };
@@ -236,7 +239,8 @@ export function AdminDashboard() {
         requiredDocuments: [""],
         officialLinks: [{ title: "", url: "" }],
       });
-    } catch (_error) {
+    } catch (error) {
+      console.error("Failed to create service:", error);
       toast.error("Failed to create service");
     }
   };

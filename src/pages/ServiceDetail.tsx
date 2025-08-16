@@ -88,14 +88,6 @@ export function ServiceDetail() {
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  if (!service) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold"></div>
-      </div>
-    );
-  }
-
   const handleFileUpload = useCallback(async () => {
     if (!selectedFile || !serviceId) return;
 
@@ -140,6 +132,14 @@ export function ServiceDetail() {
     userDocuments?.filter(doc => doc.serviceId === serviceId) || [], 
     [userDocuments, serviceId]
   );
+
+  if (!service) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-12">
