@@ -15,20 +15,47 @@ function DownloadableDocumentCard({ serviceId, documentIndex, document }: {
     uploadedAt: number;
   };
 }) {
+  const [isDownloading, setIsDownloading] = useState(false);
   const downloadUrl = useQuery(api.services.getDownloadUrl, {
     serviceId: serviceId as any,
     documentIndex,
   });
 
-  const handleDownload = () => {
-    if (downloadUrl?.url) {
-      const link = window.document.createElement('a');
-      link.href = downloadUrl.url;
-      link.download = downloadUrl.fileName;
-      window.document.body.appendChild(link);
-      link.click();
-      window.document.body.removeChild(link);
-      toast.success(`Downloaded ${downloadUrl.title}`);
+  const handleDownload = async () => {
+    if (downloadUrl?.url && !isDownloading) {
+      setIsDownloading(true);
+      try {
+        // Fetch the file as a blob to force download
+        const response = await fetch(downloadUrl.url);
+        if (!response.ok) {
+          throw new Error('Download failed');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.download = downloadUrl.fileName;
+        link.style.display = 'none';
+        
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+        
+        // Clean up the blob URL
+        window.URL.revokeObjectURL(url);
+        
+        toast.success(`Downloaded ${downloadUrl.title}`);
+      } catch (error) {
+        console.error('Download error:', error);
+        toast.error('Failed to download file');
+        
+        // Fallback: open in new tab
+        window.open(downloadUrl.url, '_blank');
+      } finally {
+        setIsDownloading(false);
+      }
     }
   };
 
@@ -58,13 +85,18 @@ function DownloadableDocumentCard({ serviceId, documentIndex, document }: {
       <button
         type="button"
         onClick={handleDownload}
-        disabled={!downloadUrl?.url}
+        disabled={!downloadUrl?.url || isDownloading}
         className="w-full bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
       >
         {!downloadUrl?.url ? (
           <span className="flex items-center">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
             Loading...
+          </span>
+        ) : isDownloading ? (
+          <span className="flex items-center">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+            Downloading...
           </span>
         ) : (
           <span className="flex items-center">
