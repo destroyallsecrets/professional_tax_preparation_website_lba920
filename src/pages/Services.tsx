@@ -30,9 +30,33 @@ export function Services() {
             Our Services
           </h1>
           <p className="text-xl text-gold-light max-w-3xl mx-auto leading-relaxed">
-            Comprehensive tax solutions tailored to meet your individual and business needs. 
-            From simple returns to complex tax planning, we've got you covered.
+            Professional tax preparation and notary services in Indianapolis. 
+            From individual returns to business filings and document notarization - we're your trusted partner.
           </p>
+        </div>
+
+        {/* Quick Service Overview Cards */}
+        <div className="grid md:grid-cols-4 gap-6 mb-16">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 text-center border border-blue-200">
+            <div className="text-4xl mb-4">📋</div>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">Tax Services</h3>
+            <p className="text-slate-600 text-sm">Current & past year tax preparation and filing</p>
+          </div>
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 text-center border border-green-200">
+            <div className="text-4xl mb-4">🏢</div>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">Business Tax</h3>
+            <p className="text-slate-600 text-sm">Corporate returns and business tax planning</p>
+          </div>
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 text-center border border-purple-200">
+            <div className="text-4xl mb-4">📝</div>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">Notary Services</h3>
+            <p className="text-slate-600 text-sm">Document notarization and authentication</p>
+          </div>
+          <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 text-center border border-orange-200">
+            <div className="text-4xl mb-4">🛡️</div>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">Additional Services</h3>
+            <p className="text-slate-600 text-sm">Fingerprinting and specialized support</p>
+          </div>
         </div>
 
         {services.length === 0 ? (

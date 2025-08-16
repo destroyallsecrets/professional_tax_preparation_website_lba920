@@ -1,8 +1,80 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery, useMutation, Authenticated, Unauthenticated } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
+
+function DownloadableDocumentCard({ serviceId, documentIndex, document }: {
+  serviceId: string;
+  documentIndex: number;
+  document: {
+    title: string;
+    description: string;
+    fileName: string;
+    fileType: string;
+    uploadedAt: number;
+  };
+}) {
+  const downloadUrl = useQuery(api.services.getDownloadUrl, {
+    serviceId: serviceId as any,
+    documentIndex,
+  });
+
+  const handleDownload = () => {
+    if (downloadUrl?.url) {
+      const link = window.document.createElement('a');
+      link.href = downloadUrl.url;
+      link.download = downloadUrl.fileName;
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+      toast.success(`Downloaded ${downloadUrl.title}`);
+    }
+  };
+
+  const getFileIcon = (fileType: string) => {
+    if (fileType.includes('pdf')) return '📄';
+    if (fileType.includes('word') || fileType.includes('doc')) return '📝';
+    if (fileType.includes('excel') || fileType.includes('sheet')) return '📊';
+    return '📋';
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-green-200 p-6 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center">
+          <span className="text-3xl mr-3">{getFileIcon(document.fileType)}</span>
+          <div>
+            <h3 className="font-semibold text-slate-800 text-lg">{document.title}</h3>
+            <p className="text-sm text-slate-600">{document.fileName}</p>
+          </div>
+        </div>
+      </div>
+      
+      <p className="text-slate-600 mb-4 text-sm leading-relaxed">
+        {document.description}
+      </p>
+      
+      <button
+        type="button"
+        onClick={handleDownload}
+        disabled={!downloadUrl?.url}
+        className="w-full bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+      >
+        {!downloadUrl?.url ? (
+          <span className="flex items-center">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+            Loading...
+          </span>
+        ) : (
+          <span className="flex items-center">
+            📥 Download Form
+          </span>
+        )}
+      </button>
+    </div>
+  );
+}
 
 export function ServiceDetail() {
   const { serviceId } = useParams();
@@ -24,7 +96,7 @@ export function ServiceDetail() {
     );
   }
 
-  const handleFileUpload = async () => {
+  const handleFileUpload = useCallback(async () => {
     if (!selectedFile || !serviceId) return;
 
     setUploading(true);
@@ -62,9 +134,12 @@ export function ServiceDetail() {
     } finally {
       setUploading(false);
     }
-  };
+  }, [selectedFile, serviceId, generateUploadUrl, uploadDocument]);
 
-  const serviceDocuments = userDocuments?.filter(doc => doc.serviceId === serviceId) || [];
+  const serviceDocuments = useMemo(() => 
+    userDocuments?.filter(doc => doc.serviceId === serviceId) || [], 
+    [userDocuments, serviceId]
+  );
 
   return (
     <div className="min-h-screen py-12">
@@ -135,6 +210,26 @@ export function ServiceDetail() {
             ))}
           </div>
         </div>
+
+        {/* Downloadable Forms */}
+        {service.downloadableDocuments && service.downloadableDocuments.length > 0 && (
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 mb-12">
+            <h2 className="text-3xl font-bold text-slate-800 mb-6">📋 Forms to Download & Complete</h2>
+            <p className="text-slate-600 mb-6">
+              Download these forms, fill them out completely, and upload them back using the document upload section below.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {service.downloadableDocuments.map((doc, index) => (
+                <DownloadableDocumentCard
+                  key={index}
+                  serviceId={serviceId as any}
+                  documentIndex={index}
+                  document={doc}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Required Documents */}
         {service.requiredDocuments.length > 0 && (
@@ -216,6 +311,7 @@ export function ServiceDetail() {
                     Size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                   <button
+                    type="button"
                     onClick={() => {
                       void handleFileUpload();
                     }}

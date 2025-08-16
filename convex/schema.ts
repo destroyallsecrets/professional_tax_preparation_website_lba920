@@ -29,6 +29,14 @@ const schema = defineSchema({
     isActive: v.boolean(),
     processingTime: v.optional(v.string()),
     additionalNotes: v.optional(v.string()),
+    downloadableDocuments: v.optional(v.array(v.object({
+      title: v.string(),
+      description: v.string(),
+      storageId: v.id("_storage"),
+      fileName: v.string(),
+      fileType: v.string(),
+      uploadedAt: v.number(),
+    }))),
   }),
 
   documents: defineTable({

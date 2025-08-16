@@ -5,8 +5,8 @@ export function About() {
         <div className="space-y-12">
           {/* Header */}
           <header className="text-center py-12 bg-black-light">
-            <h1 className="text-4xl font-bold text-gold">About Us</h1>
-            <p className="text-gold-light mt-4">Your trusted tax professionals</p>
+            <h1 className="text-4xl font-bold text-gold">About Peayday Taxes & Notary</h1>
+            <p className="text-gold-light mt-4">Your trusted tax and notary professionals in Indianapolis</p>
           </header>
           
           {/* Profile Section */}
@@ -18,30 +18,30 @@ export function About() {
                 </div>
               </div>
               <div className="md:w-2/3 p-8">
-                <h2 className="text-3xl font-bold text-gold mb-4">John Smith, CPA</h2>
+                <h2 className="text-3xl font-bold text-gold mb-4">Professional Tax & Notary Services</h2>
                 <p className="text-lg text-gold-light mb-6 leading-relaxed">
-                  With over 15 years of experience in tax preparation and financial consulting, 
-                  I am committed to helping individuals and businesses navigate the complex world 
-                  of taxation while maximizing their financial benefits.
+                  Peayday Taxes & Notary provides comprehensive tax preparation and notary services 
+                  to individuals and businesses in Indianapolis. We combine expertise with personalized 
+                  service to ensure your tax and document needs are handled professionally and efficiently.
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="font-semibold text-gold mb-2">Specializations</h3>
+                    <h3 className="font-semibold text-gold mb-2">Tax Services</h3>
                     <ul className="space-y-1 text-gold-light">
-                      <li>• Individual Tax Returns</li>
-                      <li>• Small Business Taxation</li>
-                      <li>• Tax Planning & Strategy</li>
-                      <li>• IRS Representation</li>
+                      <li>• Individual & Business Tax Returns</li>
+                      <li>• Current & Past Year Filings</li>
+                      <li>• Tax Planning & Consultation</li>
+                      <li>• Audit & Conflict Resolution</li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gold mb-2">Education</h3>
+                    <h3 className="font-semibold text-gold mb-2">Notary Services</h3>
                     <ul className="space-y-1 text-gold-light">
-                      <li>• CPA License (State of California)</li>
-                      <li>• MBA in Accounting</li>
-                      <li>• Bachelor's in Finance</li>
-                      <li>• Annual Continuing Education</li>
+                      <li>• Document Notarization</li>
+                      <li>• Acknowledgements & Jurats</li>
+                      <li>• Copy Certification</li>
+                      <li>• Apostille Assistance</li>
                     </ul>
                   </div>
                 </div>

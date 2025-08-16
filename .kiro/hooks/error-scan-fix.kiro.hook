@@ -1,0 +1,26 @@
+{
+  "enabled": true,
+  "name": "Error Scanner & Fixer",
+  "description": "Automatically scans the entire codebase for errors after any code changes, fixes detected issues, and generates commit messages for each fix to maintain an error log for repository pushes.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.tsx",
+      "src/**/*.ts",
+      "convex/**/*.ts",
+      "*.ts",
+      "*.tsx",
+      "*.js",
+      "*.jsx",
+      "package.json",
+      "tsconfig.json",
+      "eslint.config.js",
+      "vite.config.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A code file has been modified. Please perform the following tasks in order: 1) Scan the entire codebase for any errors, warnings, or issues that may have been introduced by the recent changes. 2) For each error found, provide a fix and create a descriptive commit message explaining what was fixed. 3) Check for TypeScript errors, ESLint issues, import/export problems, and any runtime errors. 4) Generate an error log with all fixes made, formatted as commit messages ready for repository pushing. Focus on maintaining code quality and preventing broken builds."
+  }
+}

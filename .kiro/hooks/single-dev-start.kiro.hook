@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Single Dev Environment Starter",
+  "description": "Ensures development environments are only started once automatically by monitoring package.json and development configuration files",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "package.json",
+      "vite.config.ts",
+      "my-app/package.json",
+      "my-app/vite.config.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check if any development servers are currently running. If no dev servers are active, you may start ONE development environment. If dev servers are already running, do NOT start additional ones. Always verify the current state before taking any action to prevent duplicate dev environment instances."
+  }
+}

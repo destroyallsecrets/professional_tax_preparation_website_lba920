@@ -11,6 +11,7 @@ import { ServiceDetail } from "./pages/ServiceDetail";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { UserDashboard } from "./pages/UserDashboard";
 import { TaxTools } from "./pages/TaxTools";
+import { Contact } from "./pages/Contact";
 import { useEffect } from 'react';
 import { useMutation } from 'convex/react';
 
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="/services" element={<Services />} />
             <Route path="/services/:serviceId" element={<ServiceDetail />} />
             <Route path="/tax-tools" element={<TaxTools />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/dashboard" element={
               <Authenticated>
                 <UserDashboard />
@@ -60,7 +62,7 @@ export default function App() {
                     <div className="bg-black-light backdrop-blur-sm rounded-2xl shadow-xl border border-gold/20 p-8">
                       <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold text-gold mb-2">Welcome Back</h1>
-                        <p className="text-gold-light">Sign in to access your tax documents</p>
+                        <p className="text-gold-light">Sign in to access your Peayday account</p>
                       </div>
                       <SignInForm />
                     </div>

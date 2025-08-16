@@ -1,0 +1,25 @@
+{
+  "enabled": true,
+  "name": "UX/UI Design Standards",
+  "description": "Monitors UI component files and ensures they follow the latest UX/UI design patterns, accessibility standards, and modern design trends",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/components/**/*.tsx",
+      "src/components/**/*.ts",
+      "src/pages/**/*.tsx",
+      "src/pages/**/*.ts",
+      "src/App.tsx",
+      "src/SignInForm.tsx",
+      "src/SignOutButton.tsx",
+      "src/index.css",
+      "styles.css",
+      "tailwind.config.js"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the modified UI/UX files and ensure they follow the latest design patterns and trends. Check for: 1) Modern component architecture (proper composition, reusability) 2) Accessibility compliance (ARIA labels, keyboard navigation, color contrast) 3) Responsive design patterns 4) Current design system standards 5) Performance optimizations 6) User experience best practices 7) Visual hierarchy and typography 8) Interactive states and micro-interactions. Provide specific recommendations for improvements to maintain professional and expert design standards."
+  }
+}

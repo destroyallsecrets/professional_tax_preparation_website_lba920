@@ -15,14 +15,14 @@ export default function Home() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                  Professional
                   <span className="block bg-gradient-to-r from-gold to-gold-light bg-clip-text text-transparent">
-                    Tax Solutions
+                    Peayday
                   </span>
+                  Taxes & Notary
                 </h1>
                 <p className="text-xl lg:text-2xl text-gold-light leading-relaxed">
-                  Expert tax preparation and consultation services with over 15 years of experience. 
-                  Maximize your refunds and minimize your stress.
+                  Professional tax preparation and notary services in Indianapolis. 
+                  Your trusted partner for all your tax and document needs.
                 </p>
               </div>
               
@@ -102,22 +102,22 @@ export default function Home() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: "Individual Tax Preparation",
-                  description: "Complete tax return preparation with maximum deduction optimization",
-                  icon: "👤",
-                  features: ["Form 1040", "Itemized Deductions", "Tax Credits", "E-filing"]
+                  title: "Tax Preparation & Filing",
+                  description: "Current and past year tax returns for individuals and businesses",
+                  icon: "📋",
+                  features: ["Individual Returns", "Business Returns", "Past Year Filings", "E-filing Included"]
                 },
                 {
-                  title: "Business Tax Services",
-                  description: "Comprehensive business tax solutions for all entity types",
-                  icon: "🏢",
-                  features: ["Corporate Returns", "Partnership Returns", "S-Corp Elections", "Quarterly Filings"]
+                  title: "Notary Services",
+                  description: "Professional notarization and document authentication services",
+                  icon: "📝",
+                  features: ["Document Notarization", "Acknowledgements", "Jurats", "Copy Certification"]
                 },
                 {
-                  title: "Tax Planning & Consultation",
-                  description: "Strategic tax planning to minimize your tax liability",
-                  icon: "📊",
-                  features: ["Year-round Planning", "Retirement Strategies", "Investment Advice", "Estate Planning"]
+                  title: "Tax Resolution & Planning",
+                  description: "Audit support, conflict resolution, and strategic tax planning",
+                  icon: "🛡️",
+                  features: ["Audit Representation", "Tax Planning", "Conflict Resolution", "Payment Plans"]
                 }
               ].map((service, index) => (
                 <div

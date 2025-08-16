@@ -3,6 +3,162 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
 
+function ServiceCard({ service }: { service: any }) {
+  const [showDocuments, setShowDocuments] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [documentTitle, setDocumentTitle] = useState("");
+  const [documentDescription, setDocumentDescription] = useState("");
+
+  const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
+  const addDownloadableDocument = useMutation(api.services.addDownloadableDocument);
+  const removeDownloadableDocument = useMutation(api.services.removeDownloadableDocument);
+
+  const handleDocumentUpload = async () => {
+    if (!selectedFile || !documentTitle.trim()) {
+      toast.error("Please select a file and enter a title");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      // Generate upload URL
+      const uploadUrl = await generateUploadUrl();
+      
+      // Upload file to storage
+      const result = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": selectedFile.type },
+        body: selectedFile,
+      });
+      
+      if (!result.ok) {
+        throw new Error("Upload failed");
+      }
+      
+      const { storageId } = await result.json();
+      
+      // Add document to service
+      await addDownloadableDocument({
+        serviceId: service._id,
+        title: documentTitle,
+        description: documentDescription || "Downloadable form for this service",
+        storageId,
+        fileName: selectedFile.name,
+        fileType: selectedFile.type,
+      });
+      
+      toast.success("Document added successfully!");
+      setSelectedFile(null);
+      setDocumentTitle("");
+      setDocumentDescription("");
+    } catch (error) {
+      toast.error("Failed to upload document");
+      console.error(error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveDocument = async (documentIndex: number) => {
+    try {
+      await removeDownloadableDocument({
+        serviceId: service._id,
+        documentIndex,
+      });
+      toast.success("Document removed successfully!");
+    } catch (_error) {
+      toast.error("Failed to remove document");
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
+      <h3 className="text-xl font-bold text-slate-800 mb-2">{service.name}</h3>
+      <p className="text-slate-600 mb-4">{service.description}</p>
+      <div className="flex justify-between items-center mb-4">
+        <span className="text-sm text-slate-500">{service.category}</span>
+        {service.price && (
+          <span className="text-blue-600 font-semibold">{service.price}</span>
+        )}
+      </div>
+      
+      <div className="border-t pt-4">
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm font-medium text-slate-700">
+            Downloadable Documents ({service.downloadableDocuments?.length || 0})
+          </span>
+          <button
+            type="button"
+            onClick={() => setShowDocuments(!showDocuments)}
+            className="text-blue-600 hover:text-blue-700 text-sm"
+          >
+            {showDocuments ? "Hide" : "Manage"}
+          </button>
+        </div>
+
+        {showDocuments && (
+          <div className="space-y-4 mt-4">
+            {/* Existing Documents */}
+            {service.downloadableDocuments?.map((doc: any, index: number) => (
+              <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                <div>
+                  <div className="font-medium text-slate-800">{doc.title}</div>
+                  <div className="text-sm text-slate-600">{doc.fileName}</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => void handleRemoveDocument(index)}
+                  className="text-red-600 hover:text-red-700 text-sm"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+
+            {/* Add New Document */}
+            <div className="border-t pt-4">
+              <h4 className="font-medium text-slate-800 mb-3">Add New Document</h4>
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Document title"
+                  value={documentTitle}
+                  onChange={(e) => setDocumentTitle(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                />
+                <input
+                  type="text"
+                  placeholder="Description (optional)"
+                  value={documentDescription}
+                  onChange={(e) => setDocumentDescription(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                />
+                <input
+                  type="file"
+                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                  className="w-full text-sm"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx"
+                />
+                {selectedFile && (
+                  <button
+                    type="button"
+                    onClick={() => void handleDocumentUpload()}
+                    disabled={uploading}
+                    className="w-full bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 disabled:opacity-50"
+                  >
+                    {uploading ? "Uploading..." : "Add Document"}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function AdminDashboard() {
   const user = useQuery(api.users.getCurrentUser);
   const dashboardStats = useQuery(api.admin.getDashboardStats);
@@ -14,7 +170,7 @@ export function AdminDashboard() {
   const updateDocumentStatus = useMutation(api.documents.updateDocumentStatus);
   const updateUserRole = useMutation(api.users.updateUserRole);
   const createService = useMutation(api.services.createService);
-  const updateService = useMutation(api.services.updateService);
+  const _updateService = useMutation(api.services.updateService);
 
   const [activeTab, setActiveTab] = useState<"overview" | "documents" | "users" | "services" | "logs">("overview");
   const [showCreateService, setShowCreateService] = useState(false);
@@ -45,7 +201,7 @@ export function AdminDashboard() {
     try {
       await updateDocumentStatus({ documentId: documentId as any, status });
       toast.success("Document status updated successfully");
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to update document status");
     }
   };
@@ -54,7 +210,7 @@ export function AdminDashboard() {
     try {
       await updateUserRole({ userId: userId as any, role });
       toast.success("User role updated successfully");
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to update user role");
     }
   };
@@ -80,7 +236,7 @@ export function AdminDashboard() {
         requiredDocuments: [""],
         officialLinks: [{ title: "", url: "" }],
       });
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to create service");
     }
   };
@@ -376,6 +532,7 @@ export function AdminDashboard() {
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-slate-800">Manage Services</h2>
               <button
+                type="button"
                 onClick={() => setShowCreateService(true)}
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
               >
@@ -512,16 +669,7 @@ export function AdminDashboard() {
             {allServices && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {allServices.map((service) => (
-                  <div key={service._id} className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
-                    <h3 className="text-xl font-bold text-slate-800 mb-2">{service.name}</h3>
-                    <p className="text-slate-600 mb-4">{service.description}</p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500">{service.category}</span>
-                      {service.price && (
-                        <span className="text-blue-600 font-semibold">{service.price}</span>
-                      )}
-                    </div>
-                  </div>
+                  <ServiceCard key={service._id} service={service} />
                 ))}
               </div>
             )}
