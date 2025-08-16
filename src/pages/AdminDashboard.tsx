@@ -74,10 +74,10 @@ function ServiceCard({ service }: { service: any }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
-      <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
-      <p className="text-gray-700 mb-4">{service.description}</p>
+      <h3 className="text-xl font-bold text-slate-800 mb-2">{service.name}</h3>
+      <p className="text-slate-600 mb-4">{service.description}</p>
       <div className="flex justify-between items-center mb-4">
-        <span className="text-sm text-gray-600">{service.category}</span>
+        <span className="text-sm text-slate-500">{service.category}</span>
         {service.price && (
           <span className="text-blue-600 font-semibold">{service.price}</span>
         )}
@@ -85,7 +85,7 @@ function ServiceCard({ service }: { service: any }) {
       
       <div className="border-t pt-4">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-800">
+          <span className="text-sm font-medium text-slate-700">
             Downloadable Documents ({service.downloadableDocuments?.length || 0})
           </span>
           <button
@@ -101,10 +101,10 @@ function ServiceCard({ service }: { service: any }) {
           <div className="space-y-4 mt-4">
             {/* Existing Documents */}
             {service.downloadableDocuments?.map((doc: any, index: number) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div>
-                  <div className="font-medium text-gray-900">{doc.title}</div>
-                  <div className="text-sm text-gray-700">{doc.fileName}</div>
+                  <div className="font-medium text-slate-800">{doc.title}</div>
+                  <div className="text-sm text-slate-600">{doc.fileName}</div>
                 </div>
                 <button
                   type="button"
@@ -118,21 +118,21 @@ function ServiceCard({ service }: { service: any }) {
 
             {/* Add New Document */}
             <div className="border-t pt-4">
-              <h4 className="font-medium text-gray-900 mb-3">Add New Document</h4>
+              <h4 className="font-medium text-slate-800 mb-3">Add New Document</h4>
               <div className="space-y-3">
                 <input
                   type="text"
                   placeholder="Document title"
                   value={documentTitle}
                   onChange={(e) => setDocumentTitle(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
                 />
                 <input
                   type="text"
                   placeholder="Description (optional)"
                   value={documentDescription}
                   onChange={(e) => setDocumentDescription(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
                 />
                 <input
                   type="file"

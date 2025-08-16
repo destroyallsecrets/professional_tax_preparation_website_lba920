@@ -2,7 +2,7 @@ import { Authenticated, Unauthenticated} from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { Toaster } from "sonner";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
 import Home from "./pages/Home";
 import { About } from "./pages/About";
@@ -69,6 +69,21 @@ export default function App() {
                   </div>
                 </div>
               </Unauthenticated>
+            } />
+            <Route path="*" element={
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-6">🔍</div>
+                  <h2 className="text-3xl font-bold text-gold mb-4">Page Not Found</h2>
+                  <p className="text-gold-light mb-8">The page you're looking for doesn't exist.</p>
+                  <Link
+                    to="/"
+                    className="bg-gold text-black px-6 py-3 rounded-lg font-semibold hover:bg-gold-dark transition-colors"
+                  >
+                    Go Home
+                  </Link>
+                </div>
+              </div>
             } />
           </Routes>
         </main>
