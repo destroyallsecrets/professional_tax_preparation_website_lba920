@@ -29,9 +29,10 @@ export const createService = mutation({
     })),
     requiredDocuments: v.array(v.string()),
     price: v.optional(v.string()),
-    category: v.string(),
+    categoryId: v.id("categories"),
     processingTime: v.optional(v.string()),
     additionalNotes: v.optional(v.string()),
+    isActive: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -42,10 +43,7 @@ export const createService = mutation({
       throw new Error("Admin access required");
     }
 
-    const serviceId = await ctx.db.insert("services", {
-      ...args,
-      isActive: true,
-    });
+    const serviceId = await ctx.db.insert("services", { ...args, isActive: args.isActive ?? true });
 
     // Log admin action
     await ctx.db.insert("adminLogs", {
@@ -71,8 +69,8 @@ export const updateService = mutation({
     })),
     requiredDocuments: v.array(v.string()),
     price: v.optional(v.string()),
-    category: v.string(),
-    isActive: v.boolean(),
+    categoryId: v.id("categories"),
+    isActive: v.optional(v.boolean()),
     processingTime: v.optional(v.string()),
     additionalNotes: v.optional(v.string()),
   },
@@ -211,5 +209,33 @@ export const getDownloadUrl = query({
       fileName: document.fileName,
       title: document.title,
     };
+  },
+});
+
+export const deleteService = mutation({
+  args: {
+    serviceId: v.id("services"),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
+    const user = await ctx.db.get(userId);
+    if (!user || user.role !== "admin") {
+      throw new Error("Admin access required");
+    }
+
+    const service = await ctx.db.get(args.serviceId);
+    if (!service) throw new Error("Service not found");
+
+    await ctx.db.delete(args.serviceId);
+
+    // Log admin action
+    await ctx.db.insert("adminLogs", {
+      adminId: userId,
+      action: "Deleted service",
+      details: `Service: ${service.name}`,
+      timestamp: Date.now(),
+    });
   },
 });
