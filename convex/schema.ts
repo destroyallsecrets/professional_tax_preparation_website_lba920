@@ -25,7 +25,7 @@ const schema = defineSchema({
     })),
     requiredDocuments: v.array(v.string()),
     price: v.optional(v.string()),
-    category: v.string(),
+    categoryId: v.id("categories"),
     isActive: v.boolean(),
     processingTime: v.optional(v.string()),
     additionalNotes: v.optional(v.string()),
@@ -37,6 +37,11 @@ const schema = defineSchema({
       fileType: v.string(),
       uploadedAt: v.number(),
     }))),
+  }),
+
+  categories: defineTable({
+    name: v.string(),
+    createdAt: v.number(),
   }),
 
   documents: defineTable({
