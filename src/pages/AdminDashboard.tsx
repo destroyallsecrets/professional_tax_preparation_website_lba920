@@ -218,6 +218,39 @@ export function AdminDashboard() {
     }
   };
 
+  const handleDocumentDownload = async (downloadUrl: string, fileName: string) => {
+    try {
+      // Fetch the file as a blob to force download
+      const response = await fetch(downloadUrl);
+      if (!response.ok) {
+        throw new Error('Download failed');
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const link = window.document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.style.display = 'none';
+      
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+      
+      // Clean up the blob URL
+      window.URL.revokeObjectURL(url);
+      
+      toast.success(`Downloaded ${fileName}`);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download file');
+      
+      // Fallback: open in new tab
+      window.open(downloadUrl, '_blank');
+    }
+  };
+
   const handleCreateService = async () => {
     try {
       const serviceData = {
@@ -452,14 +485,13 @@ export function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         {doc.downloadUrl && (
-                          <a
-                            href={doc.downloadUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-900 mr-4"
+                          <button
+                            type="button"
+                            onClick={() => handleDocumentDownload(doc.downloadUrl, doc.fileName)}
+                            className="text-blue-600 hover:text-blue-900 mr-4 underline"
                           >
                             Download
-                          </a>
+                          </button>
                         )}
                       </td>
                     </tr>

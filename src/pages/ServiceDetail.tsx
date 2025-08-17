@@ -160,6 +160,39 @@ export function ServiceDetail() {
     }
   }, [selectedFile, serviceId, generateUploadUrl, uploadDocument]);
 
+  const handleUserDocumentDownload = useCallback(async (downloadUrl: string, fileName: string) => {
+    try {
+      // Fetch the file as a blob to force download
+      const response = await fetch(downloadUrl);
+      if (!response.ok) {
+        throw new Error('Download failed');
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const link = window.document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.style.display = 'none';
+      
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+      
+      // Clean up the blob URL
+      window.URL.revokeObjectURL(url);
+      
+      toast.success(`Downloaded ${fileName}`);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download file');
+      
+      // Fallback: open in new tab
+      window.open(downloadUrl, '_blank');
+    }
+  }, []);
+
   const serviceDocuments = useMemo(() => 
     userDocuments?.filter(doc => doc.serviceId === serviceId) || [], 
     [userDocuments, serviceId]
@@ -384,14 +417,13 @@ export function ServiceDetail() {
                           {doc.status}
                         </span>
                         {doc.downloadUrl && (
-                          <a
-                            href={doc.downloadUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-700 font-medium"
+                          <button
+                            type="button"
+                            onClick={() => handleUserDocumentDownload(doc.downloadUrl, doc.fileName)}
+                            className="text-blue-600 hover:text-blue-700 font-medium underline"
                           >
                             Download
-                          </a>
+                          </button>
                         )}
                       </div>
                     </div>
