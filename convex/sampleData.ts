@@ -18,13 +18,40 @@ export const initializeSampleServices = mutation({
       return "Services already exist";
     }
 
+    // Create categories and get their IDs
+    const categories = [
+      "Tax Services",
+      "Business Tax Services",
+      "Tax Planning & Consultation",
+      "Tax Resolution Services",
+      "Notary Services",
+      "Additional Services",
+    ];
+
+    const categoryIds = new Map<string, any>();
+    for (const name of categories) {
+      const existingCategory = await ctx.db
+        .query("categories")
+        .filter((q) => q.eq(q.field("name"), name))
+        .first();
+      if (existingCategory) {
+        categoryIds.set(name, existingCategory._id);
+      } else {
+        const categoryId = await ctx.db.insert("categories", {
+          name,
+          createdAt: Date.now(),
+        });
+        categoryIds.set(name, categoryId);
+      }
+    }
+
     const sampleServices = [
       // Tax Services
       {
         name: "Current Year Tax Preparation and Filing",
         description: "Professional preparation and e-filing of your current year tax returns with maximum deduction optimization",
         detailedDescription: "Complete preparation of your current year individual or business tax returns. We ensure accuracy, maximize deductions and credits, and handle all e-filing requirements. Our experienced tax professionals stay current with the latest tax law changes to ensure you receive every benefit you're entitled to. Includes federal and state returns where applicable.",
-        category: "Tax Services",
+        categoryId: categoryIds.get("Tax Services"),
         price: "Starting at $150",
         requiredDocuments: [
           "W-2 Forms from all employers",
@@ -48,7 +75,7 @@ export const initializeSampleServices = mutation({
         name: "Past Year(s) Tax Preparation and Filing",
         description: "Preparation and filing of prior year tax returns for missed or amended filings",
         detailedDescription: "Professional preparation of past year tax returns for individuals and businesses who missed filing deadlines or need to amend previous returns. We handle all necessary forms, calculate penalties and interest, and work to minimize your tax liability. Includes assistance with payment plans if needed and communication with tax authorities.",
-        category: "Tax Services",
+        categoryId: categoryIds.get("Tax Services"),
         price: "Starting at $200",
         requiredDocuments: [
           "All income documents for the tax year(s) in question",
@@ -70,7 +97,7 @@ export const initializeSampleServices = mutation({
         name: "Business Filing for Current Tax Year",
         description: "Complete business tax return preparation for corporations, partnerships, and LLCs",
         detailedDescription: "Professional preparation of business tax returns including Forms 1120, 1120S, 1065, and Schedule C. We analyze business expenses, depreciation schedules, and ensure proper tax treatment of all business transactions. Includes K-1 preparation for partners and shareholders, quarterly estimated tax planning, and business deduction optimization.",
-        category: "Business Tax Services",
+        categoryId: categoryIds.get("Business Tax Services"),
         price: "Starting at $400",
         requiredDocuments: [
           "Profit & Loss Statement",
@@ -95,7 +122,7 @@ export const initializeSampleServices = mutation({
         name: "Business Filing for Past Tax Year(s)",
         description: "Preparation of delinquent business tax returns with penalty minimization strategies",
         detailedDescription: "Professional preparation of past due business tax returns with focus on minimizing penalties and interest. We handle complex multi-year filings, work with tax authorities to establish payment plans, and ensure compliance going forward. Includes analysis of potential penalty abatement opportunities and representation in communications with tax agencies.",
-        category: "Business Tax Services",
+        categoryId: categoryIds.get("Business Tax Services"),
         price: "Starting at $500",
         requiredDocuments: [
           "Financial statements for all years in question",
@@ -117,7 +144,7 @@ export const initializeSampleServices = mutation({
         name: "Tax Planning",
         description: "Strategic year-round tax planning to minimize your tax liability and maximize savings",
         detailedDescription: "Comprehensive tax planning services designed to reduce your overall tax burden through strategic planning and timing. We analyze your current financial situation, project future tax scenarios, and develop customized strategies for tax minimization. Includes retirement planning, investment timing, business structure optimization, and estate planning considerations.",
-        category: "Tax Planning & Consultation",
+        categoryId: categoryIds.get("Tax Planning & Consultation"),
         price: "Starting at $250",
         requiredDocuments: [
           "Previous 3 years tax returns",
@@ -141,7 +168,7 @@ export const initializeSampleServices = mutation({
         name: "Audit and Conflict Resolution Support",
         description: "Professional representation and support during IRS audits, examinations, and tax disputes",
         detailedDescription: "Complete representation before the IRS and state tax authorities during audits, examinations, and appeals. Our experienced professionals handle all communications, prepare necessary documentation, and represent your interests throughout the process. Includes audit preparation, document organization, negotiation of settlements, and appeals representation when needed.",
-        category: "Tax Resolution Services",
+        categoryId: categoryIds.get("Tax Resolution Services"),
         price: "Starting at $500",
         requiredDocuments: [
           "IRS audit notice or correspondence",
@@ -166,7 +193,7 @@ export const initializeSampleServices = mutation({
         name: "Notarization",
         description: "Professional notary services for legal documents, contracts, and official paperwork",
         detailedDescription: "Certified notary public services for all types of documents requiring notarization. We verify identity, witness signatures, and provide official notarial certificates. Our notary services meet all Indiana state requirements and are accepted nationwide. Available for real estate documents, legal contracts, powers of attorney, and other important paperwork.",
-        category: "Notary Services",
+        categoryId: categoryIds.get("Notary Services"),
         price: "$10 per signature",
         requiredDocuments: [
           "Valid government-issued photo ID (driver's license, passport, state ID)",
@@ -185,7 +212,7 @@ export const initializeSampleServices = mutation({
         name: "Notarial Acknowledgement",
         description: "Official acknowledgement services for legal documents and real estate transactions",
         detailedDescription: "Professional notarial acknowledgement services where the signer personally appears before the notary and acknowledges that they signed the document voluntarily. Commonly required for real estate deeds, mortgages, powers of attorney, and other legal documents. We ensure proper identification and complete all required notarial certificates.",
-        category: "Notary Services",
+        categoryId: categoryIds.get("Notary Services"),
         price: "$10 per acknowledgement",
         requiredDocuments: [
           "Valid government-issued photo ID",
@@ -204,7 +231,7 @@ export const initializeSampleServices = mutation({
         name: "Jurat",
         description: "Sworn statement notarization with oath or affirmation administration",
         detailedDescription: "Professional jurat services where the signer takes an oath or affirmation before the notary that the contents of the document are true. The signer must sign the document in the presence of the notary. Commonly used for affidavits, depositions, and sworn statements. We administer the required oath and complete the jurat certificate.",
-        category: "Notary Services",
+        categoryId: categoryIds.get("Notary Services"),
         price: "$10 per jurat",
         requiredDocuments: [
           "Valid government-issued photo ID",
@@ -223,7 +250,7 @@ export const initializeSampleServices = mutation({
         name: "Signature Witnessing",
         description: "Professional witnessing of document signatures with notarial certificate",
         detailedDescription: "Signature witnessing services where the notary watches the signer sign the document and then signs as a witness. This service is used when a document requires a witness signature but not a full notarization. We verify the signer's identity and provide our signature and seal as an official witness to the signing.",
-        category: "Notary Services",
+        categoryId: categoryIds.get("Notary Services"),
         price: "$10 per witnessing",
         requiredDocuments: [
           "Valid government-issued photo ID",
@@ -242,7 +269,7 @@ export const initializeSampleServices = mutation({
         name: "Notarial Copy Certification",
         description: "Certification of true copies of original documents",
         detailedDescription: "Professional copy certification services where we certify that a photocopy is a true and accurate reproduction of an original document. The notary compares the copy to the original document and provides a certificate stating the copy is accurate. Commonly used for diplomas, transcripts, passports, and other important documents.",
-        category: "Notary Services",
+        categoryId: categoryIds.get("Notary Services"),
         price: "$10 per certification",
         requiredDocuments: [
           "Original document to be copied",
@@ -261,7 +288,7 @@ export const initializeSampleServices = mutation({
         name: "Apostille or Authentication",
         description: "Document authentication services for international use",
         detailedDescription: "Professional assistance with apostille and authentication services for documents intended for use in foreign countries. We help prepare documents for submission to the Indiana Secretary of State or U.S. State Department for official authentication. This service validates the notary's signature and seal for international recognition under the Hague Convention.",
-        category: "Notary Services",
+        categoryId: categoryIds.get("Notary Services"),
         price: "$25 plus state fees",
         requiredDocuments: [
           "Notarized document requiring apostille",
@@ -281,7 +308,7 @@ export const initializeSampleServices = mutation({
         name: "Fingerprinting",
         description: "Professional fingerprinting services for background checks and licensing",
         detailedDescription: "Professional ink and digital fingerprinting services for employment background checks, professional licensing, immigration applications, and other official purposes. We use FBI-approved methods and provide clean, clear prints that meet all agency requirements. Our experienced staff ensures proper technique for successful submissions.",
-        category: "Additional Services",
+        categoryId: categoryIds.get("Additional Services"),
         price: "$25 per set",
         requiredDocuments: [
           "Valid government-issued photo ID",

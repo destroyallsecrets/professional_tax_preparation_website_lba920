@@ -4,7 +4,7 @@
   "description": "Ensures development environments are only started once automatically by monitoring package.json and development configuration files",
   "version": "1",
   "when": {
-    "type": "fileEdited",
+    "type": "userTriggered",
     "patterns": [
       "package.json",
       "vite.config.ts",
