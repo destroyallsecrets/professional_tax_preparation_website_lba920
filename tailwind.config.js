@@ -36,14 +36,14 @@ module.exports = {
       },
       colors: {
         black: {
-          DEFAULT: "#0F0F0F", // Deeper black for better contrast
-          light: "#1A1A1A",   // Slightly lighter for cards
-          lighter: "#2A2A2A", // For hover states
+          DEFAULT: "#170000ff", // Deeper black for better contrast
+          light: "#400000ff",   // Slightly lighter for cards
+          lighter: "#ff5a5aff", // For hover states
         },
         gold: {
-          DEFAULT: "#FFD700",
-          dark: "#B8860B",
-          light: "#FFF8DC",
+          DEFAULT: "#ff0000ff",
+          dark: "#ffffffff",
+          light: "#ffffffff",
           50: "#FFFEF7",
           100: "#FFFACD", 
           200: "#FFF8DC",
@@ -56,7 +56,7 @@ module.exports = {
           900: "#5C4300",
         },
         primary: {
-          DEFAULT: "#FFD700",
+          DEFAULT: "#4b0000ff",
           50: "#FFFEF7",
           100: "#FFFACD",
           500: "#FFD700",
@@ -80,7 +80,7 @@ module.exports = {
           DEFAULT: "#EF4444",
           foreground: "#FEFEFE",
         },
-        border: "#374151",
+        border: "#980000ff",
         input: "#1A1A1A",
         ring: "#FFD700",
         background: "#0F0F0F",
