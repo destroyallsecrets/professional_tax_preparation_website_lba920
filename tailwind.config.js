@@ -36,12 +36,12 @@ module.exports = {
       },
       colors: {
         black: {
-          DEFAULT: "#170000ff", // Deeper black for better contrast
-          light: "#400000ff",   // Slightly lighter for cards
-          lighter: "#ff5a5aff", // For hover states
+          DEFAULT: "#000000ff", // Deeper black for better contrast
+          light: "#520000ff",   // Slightly lighter for cards
+          lighter: "#000000ff", // For hover states
         },
         gold: {
-          DEFAULT: "#ff0000ff",
+          DEFAULT: "#fffefeff",
           dark: "#ffffffff",
           light: "#ffffffff",
           50: "#FFFEF7",
